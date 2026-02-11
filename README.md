@@ -1,79 +1,138 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+<h1>📱 Community Hub Mobile App</h1>
 
-# Getting Started
+<p>
+A <b>React Native</b> mobile application built as part of an assignment to demonstrate
+<b>navigation</b>, <b>state management</b>, <b>data fetching</b>, <b>optimistic UI updates</b>,
+and <b>offline handling</b>.
+</p>
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+<hr />
 
-## Step 1: Start the Metro Server
+<h2>🧩 Features Implemented</h2>
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+<h3>1️⃣ Authentication (Mocked)</h3>
+<ul>
+  <li>Simple <b>Login Screen</b> with email & password</li>
+  <li>No real backend authentication</li>
+  <li>Stores a <b>fake token</b> locally on login</li>
+  <li>Session persists across app restarts</li>
+  <li>On relaunch:
+    <ul>
+      <li>If token exists → user is taken to <b>Community List</b></li>
+      <li>If not → <b>Login Screen</b> is shown</li>
+    </ul>
+  </li>
+</ul>
 
-To start Metro, run the following command from the _root_ of your React Native project:
+<hr />
 
-```bash
-# using npm
-npm start
+<h3>2️⃣ Community List</h3>
+<ul>
+  <li>Communities fetched from <b>JSONPlaceholder API</b></li>
+  <li>Each community displays:
+    <ul>
+      <li><b>Name</b></li>
+      <li><b>Description</b></li>
+      <li><b>Member Count</b></li>
+    </ul>
+  </li>
+  <li>Supports <b>pagination / infinite scroll</b></li>
+  <li>Supports <b>pull-to-refresh</b></li>
+  <li>Graceful loading states using loaders</li>
+</ul>
 
-# OR using Yarn
-yarn start
-```
+<hr />
 
-## Step 2: Start your Application
+<h3>3️⃣ Community Details</h3>
+<ul>
+  <li>Tap a community to open its <b>details screen</b></li>
+  <li>Displays:
+    <ul>
+      <li>Community header information</li>
+      <li>Community status (Active / Inactive)</li>
+      <li>List of posts</li>
+    </ul>
+  </li>
+  <li><b>Join / Leave</b> community functionality</li>
+  <li>Join state is managed locally using <b>Zustand</b></li>
+</ul>
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+<hr />
 
-### For Android
+<h3>4️⃣ Posts</h3>
+<ul>
+  <li>Posts are fetched per community</li>
+  <li>Users can <b>create a new post</b> with:
+    <ul>
+      <li>Title</li>
+      <li>Body</li>
+    </ul>
+  </li>
+  <li><b>Optimistic UI updates</b>:
+    <ul>
+      <li>Post appears immediately in the list</li>
+      <li>Uses React Query mutation lifecycle</li>
+    </ul>
+  </li>
+  <li>Loading & error states handled properly</li>
+</ul>
 
-```bash
-# using npm
-npm run android
+<hr />
 
-# OR using Yarn
-yarn android
-```
+<h3>5️⃣ Offline & Error Handling</h3>
+<ul>
+  <li>Network status tracked using <b>@react-native-community/netinfo</b></li>
+  <li>Offline banner shown when user is disconnected</li>
+  <li>API failures handled gracefully</li>
+  <li>App does <b>not crash</b> on network errors</li>
+</ul>
 
-### For iOS
+<hr />
 
-```bash
-# using npm
-npm run ios
+<h2>🛠 Tech Stack</h2>
+<ul>
+  <li><b>React Native</b> (0.73.x)</li>
+  <li><b>TypeScript</b></li>
+  <li><b>React Navigation</b> (Stack + Bottom Tabs)</li>
+  <li><b>@tanstack/react-query</b> for data fetching & caching</li>
+  <li><b>Zustand</b> for lightweight state management</li>
+  <li><b>AsyncStorage</b> for persistence</li>
+</ul>
 
-# OR using Yarn
-yarn ios
-```
+<hr />
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+<h2>📂 Project Structure</h2>
+<pre>
+src/
+ ├── api/            # API layer (communities, posts)
+ ├── hooks/          # Custom hooks (queries, mutations, network)
+ ├── navigation/     # Navigators & route types
+ ├── screens/        # App screens
+ ├── store/          # Zustand stores
+ ├── components/     # Reusable UI components
+ └── types/          # TypeScript types
+</pre>
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+<hr />
 
-## Step 3: Modifying your App
+<h2>🚧 Known Limitations</h2>
+<ul>
+  <li>Backend is fully mocked (JSONPlaceholder)</li>
+  <li>Created posts are not persisted on server (API limitation)</li>
+  <li>Cache persistence across app restart can be added later</li>
+</ul>
 
-Now that you have successfully run the app, let's modify it.
+<hr />
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+<h2>✅ Assignment Status</h2>
+<ul>
+  <li><b>Authentication</b> – Completed</li>
+  <li><b>Community List</b> – Completed</li>
+  <li><b>Community Details</b> – Completed</li>
+  <li><b>Create Post + Optimistic UI</b> – Completed</li>
+  <li><b>Offline Handling</b> – Completed</li>
+</ul>
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+<hr />
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+<p><i>Built with focus on clean architecture, type safety, and real-world React Native patterns.</i></p>
