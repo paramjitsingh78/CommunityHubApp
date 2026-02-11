@@ -1,11 +1,13 @@
 import {Community} from '@app/types/community';
-import {Post} from '@app/types/post';
+import {Post, PostDTO} from '@app/types/post';
 
 export type CommunityDetails = {
   id: number;
   title: string;
   completed: boolean;
 };
+
+const BASE_URL = 'https://jsonplaceholder.typicode.com';
 
 /**
  * Fetch community list (mapped from posts API)
@@ -47,18 +49,54 @@ export const fetchCommunityDetails = async (
 };
 
 /**
- * Community posts (mapped from /posts?userId=:id)
+ * Fetch posts for a community (maps JSONPlaceholder posts -> Post)
  */
 export const fetchCommunityPosts = async (
   communityId: number,
 ): Promise<Post[]> => {
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts?userId=${communityId}`,
-  );
-
-  if (!response.ok) {
+  const res = await fetch(`${BASE_URL}/posts?userId=${communityId}`);
+  if (!res.ok) {
     throw new Error('Failed to fetch community posts');
   }
+  const data: PostDTO[] = await res.json();
+  return data.map(d => ({
+    id: d.id.toString(),
+    communityId: d.userId,
+    title: d.title,
+    body: d.body,
+  }));
+};
 
-  return response.json();
+/**
+ * Create a post (POST). JSONPlaceholder returns a created object with id.
+ * We map it to our Post type.
+ */
+export const createPost = async (
+  communityId: number,
+  title: string,
+  body: string,
+): Promise<Post> => {
+  const res = await fetch(`${BASE_URL}/posts`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      title,
+      body,
+      userId: communityId,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to create post');
+  }
+
+  const data: PostDTO = await res.json();
+
+  // JSONPlaceholder returns id as number — map to our Post
+  return {
+    id: data.id ? data.id.toString() : Date.now().toString(),
+    communityId: data.userId,
+    title: data.title,
+    body: data.body,
+  };
 };

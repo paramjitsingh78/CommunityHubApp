@@ -1,19 +1,20 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TextInput,
-  Pressable,
-} from 'react-native';
+import React from 'react';
+import {View, Text, FlatList, StyleSheet, Pressable} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+
 import {CommunityStackParamList} from '@app/navigation/types';
 import {AppScreen} from '@app/components/layout/AppScreen';
 import {Loader} from '@app/components/ui/Loader';
+
 import {useCommunityDetails} from '@app/hooks/useCommunityDetails';
 import {useCommunityPosts} from '@app/hooks/useCommunityPosts';
+import {useCreatePost} from '@app/hooks/useCreatePost';
 import {useCommunityStore} from '@app/store/communityStore';
+import {useNetworkStatus} from '@app/hooks/useNetworkStatus';
+
+import {CreatePostBox} from '@app/components/posts/CreatePostBox';
+import {PostCard} from '@app/components/posts/PostCard';
+import {Post} from '@app/types/post';
 
 type Props = NativeStackScreenProps<
   CommunityStackParamList,
@@ -23,22 +24,17 @@ type Props = NativeStackScreenProps<
 export const CommunityDetailsScreen = ({route}: Props) => {
   const {communityId} = route.params;
 
-  const {data: community, isLoading: detailsLoading} = useCommunityDetails(
-    Number(communityId),
-  );
+  const {isOnline} = useNetworkStatus();
 
-  const {data: postsData, isLoading: postsLoading} = useCommunityPosts(
-    Number(communityId),
-  );
+  const {data: community, isLoading: detailsLoading} =
+    useCommunityDetails(communityId);
+
+  const {data: posts, isLoading: postsLoading} = useCommunityPosts(communityId);
+
+  const createPost = useCreatePost();
 
   const {join, leave, isJoined} = useCommunityStore();
-
-  const joined = isJoined(Number(communityId));
-
-  const [postText, setPostText] = useState('');
-  const [localPosts, setLocalPosts] = useState<any[]>([]);
-
-  const posts = [...localPosts, ...(postsData ?? [])];
+  const joined = isJoined(communityId);
 
   if (detailsLoading || postsLoading) {
     return <Loader fullscreen />;
@@ -56,52 +52,36 @@ export const CommunityDetailsScreen = ({route}: Props) => {
         {/* Join / Leave */}
         <Pressable
           style={[styles.joinButton, joined ? styles.leave : styles.join]}
-          onPress={() =>
-            joined ? leave(Number(communityId)) : join(Number(communityId))
-          }>
+          onPress={() => (joined ? leave(communityId) : join(communityId))}>
           <Text style={styles.joinText}>
             {joined ? 'Leave Community' : 'Join Community'}
           </Text>
         </Pressable>
 
         {/* Create Post */}
-        <View style={styles.createPost}>
-          <TextInput
-            placeholder="Write a post..."
-            value={postText}
-            onChangeText={setPostText}
-            style={styles.input}
-          />
-          <Pressable
-            style={styles.postButton}
-            onPress={() => {
-              if (!postText.trim()) return;
-
-              setLocalPosts(prev => [
-                {
-                  id: Date.now(),
-                  title: 'New Post',
-                  body: postText,
-                },
-                ...prev,
-              ]);
-              setPostText('');
-            }}>
-            <Text style={styles.postButtonText}>Post</Text>
-          </Pressable>
-        </View>
+        <CreatePostBox
+          disabled={!isOnline || createPost.isLoading}
+          loading={createPost.isLoading}
+          onSubmit={(title, body) =>
+            createPost.mutate({
+              communityId,
+              title,
+              body,
+            })
+          }
+        />
 
         {/* Posts */}
-        <FlatList
-          data={posts}
-          keyExtractor={item => String(item.id)}
-          contentContainerStyle={{paddingBottom: 24}}
-          renderItem={({item}) => (
-            <View style={styles.postCard}>
-              <Text style={styles.postTitle}>{item.title}</Text>
-              <Text style={styles.postBody}>{item.body}</Text>
-            </View>
-          )}
+        <FlatList<Post>
+          data={posts ?? []}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContent}
+          renderItem={({item}) => <PostCard post={item} />}
+          ListEmptyComponent={
+            <Text style={styles.emptyText}>
+              No posts yet. Be the first to post!
+            </Text>
+          }
         />
       </View>
     </AppScreen>
@@ -111,6 +91,7 @@ export const CommunityDetailsScreen = ({route}: Props) => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    flex: 1,
   },
   title: {
     fontSize: 22,
@@ -138,37 +119,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '600',
   },
-  createPost: {
-    marginBottom: 16,
+  listContent: {
+    paddingBottom: 24,
   },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 8,
-  },
-  postButton: {
-    backgroundColor: '#1976d2',
-    paddingVertical: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  postButtonText: {
-    color: '#fff',
-    fontWeight: '600',
-  },
-  postCard: {
-    backgroundColor: '#fff',
-    padding: 12,
-    borderRadius: 10,
-    marginBottom: 12,
-  },
-  postTitle: {
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  postBody: {
-    color: '#444',
+  emptyText: {
+    textAlign: 'center',
+    color: '#888',
+    marginTop: 24,
   },
 });

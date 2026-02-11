@@ -1,6 +1,6 @@
+import {useAuthStore} from '@app/store/useAuthStore';
 import React, {useState} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
-import {useAuthStore} from '@app/store/useAuthStore';
 
 export const LoginScreen = () => {
   const login = useAuthStore(state => state.login);
