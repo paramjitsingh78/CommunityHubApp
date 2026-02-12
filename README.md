@@ -13,7 +13,7 @@ strong fundamentals in <b>architecture</b>, <b>state management</b>, <b>API inte
 <pre>
 npm install
 cd ios && pod install && cd ..
-npx react-native start --reset-cache
+npm start --reset-cache
 npm run ios     # Run on iOS
 npm run android # Run on Android
 </pre>
