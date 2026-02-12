@@ -166,8 +166,8 @@ src/
 
 <h3>Community List (Home)</h3>
 <p float="left">
-  <img src="src/app/screenshots/ios.png" width="300" />
-  <img src="src/app/screenshots/android.png" width="300" />
+  <img src="src/app/screenshots/iosHome.png" width="300" />
+  <img src="src/app/screenshots/androidHome.png" width="300" />
 </p>
 
 <hr />
