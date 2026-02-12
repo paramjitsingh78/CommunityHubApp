@@ -11,10 +11,11 @@ strong fundamentals in <b>architecture</b>, <b>state management</b>, <b>API inte
 <h2>🚀 Setup Instructions</h2>
 
 <pre>
-yarn install
+npm install
 cd ios && pod install && cd ..
-yarn ios     # Run on iOS
-yarn android # Run on Android
+npx react-native start --reset-cache
+npm run ios     # Run on iOS
+npm run android # Run on Android
 </pre>
 
 <hr />
