@@ -10,7 +10,6 @@ const Stack = createNativeStackNavigator();
 
 export const RootNavigator = () => {
   const {token, isHydrated} = useAuthStore();
-  console.log('token===> ', token);
 
   if (!isHydrated) {
     return (

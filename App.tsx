@@ -4,6 +4,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {StatusBar} from 'react-native';
 import {RootNavigator} from '@app/navigation';
 import {useAuthStore} from '@app/store/useAuthStore';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,13 +22,14 @@ const App = () => {
     hydrate();
   }, [hydrate]);
   return (
-    <QueryClientProvider client={queryClient}>
-      <NavigationContainer>
-        <StatusBar barStyle="dark-content" />
-        {/* RootNavigator will be mounted here */}
-        <RootNavigator />
-      </NavigationContainer>
-    </QueryClientProvider>
+    <SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>
+          <StatusBar barStyle="dark-content" />
+          <RootNavigator />
+        </NavigationContainer>
+      </QueryClientProvider>
+    </SafeAreaProvider>
   );
 };
 

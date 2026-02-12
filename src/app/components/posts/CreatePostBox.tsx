@@ -1,12 +1,6 @@
-import React, {useState} from 'react';
-import {
-  View,
-  TextInput,
-  Pressable,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-} from 'react-native';
+import React, {useMemo, useState} from 'react';
+import {View, TextInput, Pressable, Text, StyleSheet} from 'react-native';
+import {Loader} from '../ui/Loader';
 
 type Props = {
   disabled?: boolean;
@@ -17,8 +11,15 @@ type Props = {
 export const CreatePostBox = ({disabled, loading, onSubmit}: Props) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const isValid = useMemo(() => {
+    return title.trim().length > 0 && body.trim().length > 0;
+  }, [title, body]);
+  const isButtonDisabled = disabled || !isValid;
 
   const handlePost = () => {
+    if (!isValid || loading) {
+      return;
+    }
     if (!title.trim() || !body.trim()) {
       return;
     }
@@ -45,14 +46,10 @@ export const CreatePostBox = ({disabled, loading, onSubmit}: Props) => {
       />
 
       <Pressable
-        style={[styles.button, disabled && {opacity: 0.6}]}
-        disabled={disabled}
+        disabled={isButtonDisabled}
+        style={[styles.button, isButtonDisabled && styles.buttonDisabled]}
         onPress={handlePost}>
-        {loading ? (
-          <ActivityIndicator color="#fff" />
-        ) : (
-          <Text style={styles.buttonText}>Post</Text>
-        )}
+        {loading ? <Loader /> : <Text style={styles.buttonText}>Post</Text>}
       </Pressable>
     </View>
   );
@@ -75,9 +72,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#1976d2',
-    paddingVertical: 10,
+    height: 48,
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   buttonText: {
     color: '#fff',
