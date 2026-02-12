@@ -1,7 +1,6 @@
 import {useNetworkStatus} from '@app/hooks/useNetworkStatus';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {OfflineBanner} from '../ui/OfflineBanner';
 
 type Props = {
@@ -12,10 +11,10 @@ export const AppScreen = ({children}: Props) => {
   const {isOnline} = useNetworkStatus();
 
   return (
-    <SafeAreaView style={styles.safe} edges={['left', 'right']}>
+    <View style={styles.safe}>
       {!isOnline && <OfflineBanner />}
       <View style={styles.content}>{children}</View>
-    </SafeAreaView>
+    </View>
   );
 };
 

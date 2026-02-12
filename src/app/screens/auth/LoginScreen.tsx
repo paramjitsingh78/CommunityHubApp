@@ -1,59 +1,60 @@
-import {useAuthStore} from '@app/store/useAuthStore';
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
+import {useAuthStore} from '@app/store/useAuthStore';
+import {isValidEmail, isValidPassword} from '@app/utils/validators';
+import {AppScreen} from '@app/components/layout/AppScreen';
 
 export const LoginScreen = () => {
   const login = useAuthStore(state => state.login);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const onLogin = async () => {
-    try {
-      await login(email, password);
-    } catch (e) {
-      setError('Invalid credentials');
-    }
-  };
+  const isFormValid = useMemo(() => {
+    return isValidEmail(email) && isValidPassword(password);
+  }, [email, password]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+    <AppScreen>
+      <View style={styles.container}>
+        <Text style={styles.title}>Welcome back</Text>
 
-      {error ? <Text style={styles.error}>{error}</Text> : null}
+        <TextInput
+          placeholder="Email"
+          autoCapitalize="none"
+          keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+        />
 
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-        autoCapitalize="none"
-      />
+        <TextInput
+          placeholder="Password"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          style={styles.input}
+        />
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        style={styles.input}
-        secureTextEntry
-      />
-
-      <Pressable style={styles.button} onPress={onLogin}>
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
-    </View>
+        <Pressable
+          disabled={!isFormValid}
+          style={[styles.button, !isFormValid && styles.buttonDisabled]}
+          onPress={() => login(email)}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      </View>
+    </AppScreen>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 24,
     flex: 1,
     justifyContent: 'center',
-    padding: 24,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
     marginBottom: 24,
     textAlign: 'center',
@@ -66,19 +67,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   button: {
-    backgroundColor: '#1e88e5',
-    padding: 14,
+    backgroundColor: '#1976d2',
+    paddingVertical: 14,
     borderRadius: 8,
-    marginTop: 12,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  buttonDisabled: {
+    backgroundColor: '#90caf9',
   },
   buttonText: {
     color: '#fff',
-    textAlign: 'center',
     fontWeight: '600',
-  },
-  error: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 12,
+    fontSize: 16,
   },
 });

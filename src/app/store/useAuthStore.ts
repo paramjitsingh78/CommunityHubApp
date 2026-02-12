@@ -1,37 +1,55 @@
-import {create} from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {create} from 'zustand';
 
 type AuthState = {
   token: string | null;
+  userEmail: string | null;
   isHydrated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+
+  login: (email: string) => Promise<void>;
   logout: () => Promise<void>;
   hydrate: () => Promise<void>;
 };
 
 export const useAuthStore = create<AuthState>(set => ({
   token: null,
+  userEmail: null,
   isHydrated: false,
 
-  hydrate: async () => {
-    const token = await AsyncStorage.getItem('auth_token');
-    set({token, isHydrated: true});
-  },
-
-  login: async (email, password) => {
-    // mock validation
-    if (!email || !password) {
-      throw new Error('Invalid credentials');
-    }
-
+  login: async email => {
     const fakeToken = 'fake-jwt-token';
 
-    await AsyncStorage.setItem('auth_token', fakeToken);
-    set({token: fakeToken});
+    await AsyncStorage.multiSet([
+      ['token', fakeToken],
+      ['userEmail', email],
+    ]);
+
+    set({
+      token: fakeToken,
+      userEmail: email,
+    });
   },
 
   logout: async () => {
-    await AsyncStorage.removeItem('auth_token');
-    set({token: null});
+    await AsyncStorage.multiRemove(['token', 'userEmail']);
+
+    // reset in-memory state
+    set({
+      token: null,
+      userEmail: null,
+    });
+  },
+
+  hydrate: async () => {
+    const [[, token], [, userEmail]] = await AsyncStorage.multiGet([
+      'token',
+      'userEmail',
+    ]);
+
+    set({
+      token: token ?? null,
+      userEmail: userEmail ?? null,
+      isHydrated: true,
+    });
   },
 }));

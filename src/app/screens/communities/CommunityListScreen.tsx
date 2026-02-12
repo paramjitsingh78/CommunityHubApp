@@ -42,7 +42,7 @@ export const CommunityListScreen = () => {
   return (
     <AppScreen>
       <View style={styles.container}>
-        {/* <Text style={styles.header}>Communities</Text> */}
+        <Text style={styles.subtitle}>Find your people</Text>
 
         <FlatList
           data={communities}
@@ -83,6 +83,12 @@ export const CommunityListScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+
+  subtitle: {
+    color: '#666',
+    marginHorizontal: 16,
+    paddingTop: 5,
   },
   header: {
     fontSize: 22,
