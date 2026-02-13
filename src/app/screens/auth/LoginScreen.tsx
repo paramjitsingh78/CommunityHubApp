@@ -3,6 +3,7 @@ import {View, Text, TextInput, Pressable, StyleSheet} from 'react-native';
 import {useAuthStore} from '@app/store/useAuthStore';
 import {isValidEmail, isValidPassword} from '@app/utils/validators';
 import {AppScreen} from '@app/components/layout/AppScreen';
+import {COLORS} from '@app/theme/colors';
 
 export const LoginScreen = () => {
   const login = useAuthStore(state => state.login);
@@ -24,6 +25,7 @@ export const LoginScreen = () => {
           autoCapitalize="none"
           keyboardType="email-address"
           value={email}
+          placeholderTextColor={COLORS.placeholder}
           onChangeText={setEmail}
           style={styles.input}
         />
@@ -32,6 +34,7 @@ export const LoginScreen = () => {
           placeholder="Password"
           secureTextEntry
           value={password}
+          placeholderTextColor={COLORS.placeholder}
           onChangeText={setPassword}
           style={styles.input}
         />
