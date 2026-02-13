@@ -57,13 +57,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700',
     marginBottom: 24,
+    color: 'black',
     textAlign: 'center',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#9f9f9f',
     borderRadius: 8,
     padding: 12,
+    color: 'black',
     marginBottom: 12,
   },
   button: {

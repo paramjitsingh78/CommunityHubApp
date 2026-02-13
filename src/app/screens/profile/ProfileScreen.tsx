@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontSize: 14,
+    color: 'black',
     marginBottom: 24,
   },
   logoutButton: {

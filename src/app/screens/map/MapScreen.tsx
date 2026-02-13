@@ -10,7 +10,9 @@ export const MapScreen = () => {
 
         {/* Later you could replace this with react-native-maps */}
         <View style={styles.mapPlaceholder}>
-          <Text> We are working on this, it will be updated soon..</Text>
+          <Text style={styles.mapText}>
+            We are working on this, it will be updated soon..
+          </Text>
         </View>
       </View>
     </AppScreen>
@@ -33,9 +35,12 @@ const styles = StyleSheet.create({
   },
   mapPlaceholder: {
     flex: 1,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: '#676767',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  mapText: {
+    color: 'white',
   },
 });
