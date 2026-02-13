@@ -20,6 +20,29 @@ npm run android # Run on Android
 
 <hr />
 
+<h3>🔤 Vector Icons Setup</h3>
+
+<p>
+This project uses <b>react-native-vector-icons</b> for bottom tab icons.
+The package is already included in <code>package.json</code>.
+</p>
+
+<p>
+After installing dependencies, native font assets must be linked:
+</p>
+
+<pre>
+npx react-native-asset
+cd ios && pod install && cd ..
+</pre>
+
+<p>
+This step is required to ensure icon fonts are available on both
+<b>Android</b> and <b>iOS</b>.
+</p>
+
+<hr />
+
 <h2>🧠 App Concept</h2>
 
 <p>
@@ -37,12 +60,6 @@ join or leave communities, and create simple posts with a smooth and resilient u
   <li>No real backend authentication</li>
   <li>Stores a <b>fake token</b> locally on login</li>
   <li>Session persists across app restarts</li>
-  <li>On relaunch:
-    <ul>
-      <li>If token exists → user is taken to <b>Community List</b></li>
-      <li>If not → <b>Login Screen</b> is shown</li>
-    </ul>
-  </li>
 </ul>
 
 <hr />
