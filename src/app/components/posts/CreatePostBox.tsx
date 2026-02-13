@@ -1,6 +1,7 @@
 import React, {useMemo, useState} from 'react';
 import {View, TextInput, Pressable, Text, StyleSheet} from 'react-native';
 import {Loader} from '../ui/Loader';
+import {COLORS} from '@app/theme/colors';
 
 type Props = {
   disabled?: boolean;
@@ -34,12 +35,14 @@ export const CreatePostBox = ({disabled, loading, onSubmit}: Props) => {
       <TextInput
         placeholder="Post title"
         value={title}
+        placeholderTextColor={COLORS.placeholder}
         onChangeText={setTitle}
         style={styles.input}
       />
       <TextInput
         placeholder="Write something..."
         value={body}
+        placeholderTextColor={COLORS.placeholder}
         onChangeText={setBody}
         style={[styles.input, styles.bodyInput]}
         multiline
