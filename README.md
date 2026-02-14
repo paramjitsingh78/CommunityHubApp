@@ -13,7 +13,6 @@ strong fundamentals in <b>architecture</b>, <b>state management</b>, <b>API inte
 <pre>
 npm install
 cd ios && pod install && cd ..
-npm start --reset-cache
 npm run ios     # Run on iOS
 npm run android # Run on Android
 </pre>
@@ -28,7 +27,7 @@ The package is already included in <code>package.json</code>.
 </p>
 
 <p>
-After installing dependencies, native font assets must be linked:
+Due to how React Native CLI handles native assets, icon fonts must be linked manually after installation.
 </p>
 
 <pre>
@@ -134,6 +133,13 @@ join or leave communities, and create simple posts with a smooth and resilient u
   <li><b>AsyncStorage</b> for persistence</li>
 </ul>
 
+<p>
+<b>Why React Query?</b><br />
+React Query was chosen for server state management to simplify caching,
+retries, and optimistic UI updates without introducing Redux boilerplate.
+</p>
+
+
 <hr />
 
 <h2>📂 Project Structure</h2>
@@ -176,11 +182,17 @@ src/
   <li>Skeleton loaders instead of spinners</li>
   <li>E2E tests using Detox</li>
   <li>Extract a small design system (colors, spacing, typography)</li>
+  <li>
+    Create <b>reusable form components</b> (e.g. Input, Button, ErrorText)
+    once the app scales, to ensure consistent behavior, validation,
+    accessibility, and styling across the app
+  </li>
 </ul>
 
 <hr />
 
 <h2>📸 Screenshots</h2>
+<p><i>Screenshots taken on iOS Simulator and Android Emulator.</i></p>
 
 <h3>Community List (Home)</h3>
 <p float="left">
