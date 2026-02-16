@@ -55,8 +55,10 @@ yarn-error.log
 # Bundle artifact
 *.jsbundle
 
-# Ruby / CocoaPods
+# Ruby / CocoaPods / iOS
 /ios/Pods/
+/ios/build/
+*.pbxproj
 /vendor/bundle/
 
 # Temporary files created by Metro to check the health of the file watcher
@@ -64,3 +66,4 @@ yarn-error.log
 
 # testing
 /coverage
+.expo/
